@@ -2,8 +2,9 @@ import React, { useState, useMemo } from 'react';
 import { useApp } from '../AppContext';
 import { StorageManager } from '../db';
 import { Product, Category, Order, CustomRequest, AppSettings } from '../types';
+import { formatCurrency } from '../utils';
 import { 
-  BarChart, 
+  BarChart,
   ShoppingBag, 
   FolderHeart, 
   Sparkles, 
@@ -17,8 +18,11 @@ import {
   Check, 
   X,
   Eye,
-  RefreshCw
+  RefreshCw,
+  LogOut,
+  Lock
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 
 export default function AdminView() {
   const { 
@@ -33,6 +37,31 @@ export default function AdminView() {
     setOrders,
     setCustomRequests
   } = useApp();
+
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(() => {
+    return sessionStorage.getItem('isAdminLoggedIn') === 'true';
+  });
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+
+  const handleAdminLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoggingIn(true);
+    setLoginError('');
+    
+    // Simulate slight delay for premium feedback feel
+    setTimeout(() => {
+      if (username === 'y4sh_fr' && password === 'yash2010') {
+        setIsAdminLoggedIn(true);
+        sessionStorage.setItem('isAdminLoggedIn', 'true');
+      } else {
+        setLoginError('Incorrect username or password. Please try again! 🌸');
+      }
+      setIsLoggingIn(false);
+    }, 800);
+  };
 
   const [activeTab, setActiveTab] = useState<'dashboard' | 'products' | 'categories' | 'orders' | 'custom' | 'settings'>('dashboard');
 
@@ -212,6 +241,84 @@ export default function AdminView() {
     }
   };
 
+  if (!isAdminLoggedIn) {
+    return (
+      <div className="max-w-md mx-auto px-6 py-12 flex flex-col items-center justify-center min-h-[70vh]">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="w-full bg-white rounded-3xl border border-brand-border/60 p-8 shadow-xl relative overflow-hidden"
+        >
+          {/* Decorative design orbs */}
+          <div className="absolute -top-10 -right-10 w-24 h-24 rounded-full bg-secondary/30 blur-xl pointer-events-none" />
+          <div className="absolute -bottom-10 -left-10 w-24 h-24 rounded-full bg-primary/20 blur-xl pointer-events-none" />
+
+          <div className="flex flex-col items-center mb-6 text-center">
+            <div className="p-3.5 bg-secondary/40 text-accent rounded-2xl mb-3 flex items-center justify-center">
+              <Lock size={28} className="animate-pulse" />
+            </div>
+            <h1 className="font-heading text-2xl font-bold text-gray-800">Admin Control Gate</h1>
+            <p className="text-xs text-gray-500 mt-1">Please sign in with your Lilyy Beads credentials to access database management 🌸</p>
+          </div>
+
+          <form onSubmit={handleAdminLogin} className="space-y-4">
+            <div>
+              <label className="block text-xs font-semibold text-gray-600 mb-1">Username</label>
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+                placeholder="Enter admin username"
+                className="w-full px-4 py-3 rounded-2xl border border-brand-border/40 focus:border-accent focus:ring-2 focus:ring-accent/10 bg-bg-brand/50 text-sm outline-none transition-all"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-gray-600 mb-1">Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                placeholder="••••••••"
+                className="w-full px-4 py-3 rounded-2xl border border-brand-border/40 focus:border-accent focus:ring-2 focus:ring-accent/10 bg-bg-brand/50 text-sm outline-none transition-all"
+              />
+            </div>
+
+            {loginError && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="p-3 bg-rose-50 border border-rose-100 rounded-xl text-rose-500 text-xs font-medium text-center"
+              >
+                {loginError}
+              </motion.div>
+            )}
+
+            <button
+              type="submit"
+              disabled={isLoggingIn}
+              className="w-full py-3 px-4 bg-accent hover:bg-accent/90 text-white font-heading font-semibold text-sm rounded-2xl shadow-md transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center justify-center gap-2"
+            >
+              {isLoggingIn ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <span>Verifying Credentials...</span>
+                </>
+              ) : (
+                <>
+                  <span>Unlock Admin Panel 🗝️</span>
+                </>
+              )}
+            </button>
+          </form>
+        </motion.div>
+      </div>
+    );
+  }
+
   return (
     <div id="admin-view" className="max-w-7xl mx-auto px-6 mt-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
       
@@ -275,6 +382,16 @@ export default function AdminView() {
         >
           <Settings size={14} /> General Settings
         </button>
+
+        <button
+          onClick={() => {
+            setIsAdminLoggedIn(false);
+            sessionStorage.removeItem('isAdminLoggedIn');
+          }}
+          className="py-2.5 px-4 rounded-xl text-xs font-bold text-left transition-colors flex items-center gap-2 text-rose-500 hover:bg-rose-50 cursor-pointer mt-6 border-t border-brand-border/20 pt-4"
+        >
+          <LogOut size={14} /> Log Out
+        </button>
       </div>
 
       {/* Main content viewport */}
@@ -290,7 +407,7 @@ export default function AdminView() {
               
               <div className="bg-white p-5 rounded-3xl border border-brand-border/40 shadow-sm">
                 <span className="text-[10px] uppercase font-bold text-gray-400">Total Sales</span>
-                <span className="text-2xl font-bold font-heading text-gray-800 block mt-1">${stats.totalSales.toFixed(2)}</span>
+                <span className="text-2xl font-bold font-heading text-gray-800 block mt-1">{formatCurrency(stats.totalSales)}</span>
               </div>
 
               <div className="bg-white p-5 rounded-3xl border border-brand-border/40 shadow-sm">
@@ -363,11 +480,11 @@ export default function AdminView() {
                       <td className="p-4 font-mono font-bold text-accent">
                         {prod.salePrice !== undefined ? (
                           <div className="flex flex-col">
-                            <span>${prod.salePrice}</span>
-                            <span className="text-[10px] text-gray-400 line-through">${prod.price}</span>
+                            <span>{formatCurrency(prod.salePrice)}</span>
+                            <span className="text-[10px] text-gray-400 line-through">{formatCurrency(prod.price)}</span>
                           </div>
                         ) : (
-                          `$${prod.price}`
+                          formatCurrency(prod.price)
                         )}
                       </td>
                       <td className="p-4 font-bold">{prod.stock} pcs</td>
@@ -504,7 +621,7 @@ export default function AdminView() {
                           ))}
                         </div>
                       </td>
-                      <td className="p-4 font-mono font-bold text-accent">${ord.totalAmount.toFixed(2)}</td>
+                      <td className="p-4 font-mono font-bold text-accent">{formatCurrency(ord.totalAmount)}</td>
                       <td className="p-4 text-center">
                         <select
                           value={ord.orderStatus}
@@ -585,7 +702,7 @@ export default function AdminView() {
                       </td>
                       <td className="p-4 max-w-xs text-[11px] leading-relaxed italic">{req.description}</td>
                       <td className="p-4 font-mono font-bold text-accent">
-                        <div>Max: ${req.budget}</div>
+                        <div>Max: {formatCurrency(req.budget)}</div>
                         {req.deliveryDate && <div className="text-[9px] font-normal text-gray-400">By: {req.deliveryDate}</div>}
                       </td>
                       <td className="p-4 text-center">
@@ -666,7 +783,7 @@ export default function AdminView() {
               <div className="grid grid-cols-2 gap-4">
                 {/* Shipping Charges */}
                 <div>
-                  <label className="text-xs font-bold text-gray-600 mb-1.5 block">Flat Shipping Charges ($)</label>
+                  <label className="text-xs font-bold text-gray-600 mb-1.5 block">Flat Shipping Charges (USD, formatted to ₹)</label>
                   <input
                     type="number"
                     required
@@ -751,7 +868,7 @@ export default function AdminView() {
               <div className="grid grid-cols-2 gap-4">
                 {/* Price */}
                 <div>
-                  <label className="font-bold text-gray-700 block mb-1">Standard Price ($)</label>
+                  <label className="font-bold text-gray-700 block mb-1">Standard Price (USD, formatted to ₹)</label>
                   <input
                     type="number"
                     required
@@ -763,7 +880,7 @@ export default function AdminView() {
 
                 {/* Sale Price */}
                 <div>
-                  <label className="font-bold text-gray-700 block mb-1">Sale Price (Optional)</label>
+                  <label className="font-bold text-gray-700 block mb-1">Sale Price (Optional, USD formatted to ₹)</label>
                   <input
                     type="number"
                     placeholder="None"

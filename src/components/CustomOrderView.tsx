@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useApp } from '../AppContext';
 import { Palette, Sparkles, Phone, Mail, User, Info, DollarSign, Calendar, Upload, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { formatCurrency } from '../utils';
 
 const PRESET_COLORS = [
   { name: 'Marshmallow Pink', hex: '#FFDCE8' },
@@ -219,7 +220,7 @@ export default function CustomOrderView() {
                 <div className="p-4 rounded-2xl bg-bg-brand border border-brand-border/60">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs text-gray-500">Estimator</span>
-                    <span className="font-heading font-extrabold text-accent text-lg">${budget}</span>
+                    <span className="font-heading font-extrabold text-accent text-lg">{formatCurrency(budget)}</span>
                   </div>
                   <input
                     type="range"
@@ -231,8 +232,8 @@ export default function CustomOrderView() {
                     className="w-full accent-accent cursor-pointer"
                   />
                   <div className="flex justify-between text-[9px] text-gray-400 mt-1">
-                    <span>Simple Bracelet ($10)</span>
-                    <span>Deluxe Necklace Set ($100)</span>
+                    <span>Simple Bracelet ({formatCurrency(10)})</span>
+                    <span>Deluxe Necklace Set ({formatCurrency(100)})</span>
                   </div>
                 </div>
               </div>

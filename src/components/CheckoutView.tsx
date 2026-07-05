@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useApp } from '../AppContext';
 import { ShoppingBag, ArrowLeft, Check, Sparkles, CreditCard, Mail, Phone, MapPin, User } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { formatCurrency } from '../utils';
 
 export default function CheckoutView() {
   const { 
@@ -136,7 +137,7 @@ export default function CheckoutView() {
             
             <div className="w-full text-left bg-bg-brand border border-brand-border/60 p-4 rounded-2xl text-xs text-gray-600 flex flex-col gap-1">
               <span className="font-bold text-gray-800 block mb-1">Receipt Summary</span>
-              <span><strong>Total Paid:</strong> ${successOrder.totalAmount.toFixed(2)}</span>
+              <span><strong>Total Paid:</strong> {formatCurrency(successOrder.totalAmount)}</span>
               <span><strong>Shipping To:</strong> {successOrder.shippingAddress}</span>
               <span><strong>Payment Status:</strong> {successOrder.paymentStatus}</span>
             </div>
@@ -349,7 +350,7 @@ export default function CheckoutView() {
                             <span className="text-[10px] text-gray-400">Qty: {item.quantity}</span>
                           </div>
                         </div>
-                        <span className="font-semibold text-gray-800">${(activePrice * item.quantity).toFixed(2)}</span>
+                        <span className="font-semibold text-gray-800">{formatCurrency(activePrice * item.quantity)}</span>
                       </div>
                     );
                   })}
@@ -359,26 +360,26 @@ export default function CheckoutView() {
                 <div className="flex flex-col gap-2 pt-4 border-t border-brand-border/20 text-xs text-gray-600">
                   <div className="flex justify-between">
                     <span>Subtotal</span>
-                    <span>${subtotal.toFixed(2)}</span>
+                    <span>{formatCurrency(subtotal)}</span>
                   </div>
                   {appliedDiscount > 0 && (
                     <div className="flex justify-between text-accent font-semibold">
                       <span>Discount ({appliedDiscount}%)</span>
-                      <span>-${discountAmount.toFixed(2)}</span>
+                      <span>-{formatCurrency(discountAmount)}</span>
                     </div>
                   )}
                   <div className="flex justify-between">
                     <span>Shipping Charges</span>
-                    <span>${shippingCharge.toFixed(2)}</span>
+                    <span>{formatCurrency(shippingCharge)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Estimated Sales Tax ({settings.taxPercent}%)</span>
-                    <span>${taxAmount.toFixed(2)}</span>
+                    <span>{formatCurrency(taxAmount)}</span>
                   </div>
                   
                   <div className="flex justify-between text-sm font-bold text-gray-800 border-t border-brand-border/10 pt-3 mt-1">
                     <span>Order Grand Total</span>
-                    <span className="text-accent font-heading text-lg">${totalAmount.toFixed(2)}</span>
+                    <span className="text-accent font-heading text-lg">{formatCurrency(totalAmount)}</span>
                   </div>
                 </div>
 

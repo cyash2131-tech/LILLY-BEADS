@@ -3,6 +3,7 @@ import { useApp } from '../AppContext';
 import { StorageManager } from '../db';
 import { Heart, ShoppingBag, MapPin, User, Mail, LogOut, FileText, Check, Plus, Star } from 'lucide-react';
 import ProductCard from './ProductCard';
+import { formatCurrency } from '../utils';
 
 export default function AccountView() {
   const { 
@@ -198,10 +199,10 @@ export default function AccountView() {
                           />
                           <div>
                             <span className="font-bold text-gray-700 block line-clamp-1">{it.name}</span>
-                            <span className="text-[10px] text-gray-400">Quantity: {it.quantity} x ${it.price}</span>
+                            <span className="text-[10px] text-gray-400">Quantity: {it.quantity} x {formatCurrency(it.price)}</span>
                           </div>
                         </div>
-                        <span className="font-semibold text-gray-800">${(it.price * it.quantity).toFixed(2)}</span>
+                        <span className="font-semibold text-gray-800">{formatCurrency(it.price * it.quantity)}</span>
                       </div>
                     ))}
                   </div>
@@ -210,7 +211,7 @@ export default function AccountView() {
                   <div className="flex justify-between items-baseline pt-4 border-t border-brand-border/20 text-xs text-gray-500 mt-1">
                     <span>Delivered to: <strong>{ord.shippingAddress}</strong></span>
                     <span className="font-heading text-sm font-bold text-accent shrink-0">
-                      Total: ${ord.totalAmount.toFixed(2)}
+                      Total: {formatCurrency(ord.totalAmount)}
                     </span>
                   </div>
 

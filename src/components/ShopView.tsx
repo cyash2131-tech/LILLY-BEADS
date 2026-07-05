@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useApp } from '../AppContext';
 import { Search, SlidersHorizontal, ArrowUpDown, X, Heart } from 'lucide-react';
 import ProductCard from './ProductCard';
+import { formatCurrency } from '../utils';
 
 export default function ShopView() {
   const { 
@@ -158,7 +159,7 @@ export default function ShopView() {
                 onChange={(e) => { setPriceRange(Number(e.target.value)); setCurrentPage(1); }}
                 className="w-full accent-accent cursor-pointer"
               />
-              <span className="text-xs font-bold text-accent font-heading">${priceRange}</span>
+              <span className="text-xs font-bold text-accent font-heading">{formatCurrency(priceRange)}</span>
             </div>
           </div>
 

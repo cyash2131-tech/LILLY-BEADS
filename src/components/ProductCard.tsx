@@ -3,6 +3,7 @@ import { Product } from '../types';
 import { useApp } from '../AppContext';
 import { Heart, ShoppingBag, Eye, Sparkles, Check, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { formatCurrency } from '../utils';
 
 export default function ProductCard({ product }: { product: Product; key?: string | number }) {
   const { toggleWishlist, isInWishlist, addToCart, setCurrentView, setSelectedProductId } = useApp();
@@ -121,15 +122,15 @@ export default function ProductCard({ product }: { product: Product; key?: strin
               {hasSale ? (
                 <div className="flex items-baseline gap-1.5">
                   <span className="text-lg font-bold text-accent font-heading">
-                    ${product.salePrice}
+                    {formatCurrency(product.salePrice!)}
                   </span>
                   <span className="text-xs text-gray-400 line-through">
-                    ${product.price}
+                    {formatCurrency(product.price)}
                   </span>
                 </div>
               ) : (
                 <span className="text-lg font-bold text-gray-800 font-heading">
-                  ${product.price}
+                  {formatCurrency(product.price)}
                 </span>
               )}
               <span className="text-[10px] text-gray-400">
@@ -216,15 +217,15 @@ export default function ProductCard({ product }: { product: Product; key?: strin
                     {hasSale ? (
                       <div className="flex items-baseline gap-2">
                         <span className="text-2xl font-extrabold text-accent font-heading">
-                          ${product.salePrice}
+                          {formatCurrency(product.salePrice!)}
                         </span>
                         <span className="text-sm text-gray-400 line-through">
-                          ${product.price}
+                          {formatCurrency(product.price)}
                         </span>
                       </div>
                     ) : (
                       <span className="text-2xl font-extrabold text-gray-800 font-heading">
-                        ${product.price}
+                        {formatCurrency(product.price)}
                       </span>
                     )}
                     <span className="text-xs text-gray-500 mt-1 block">

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useApp } from '../AppContext';
 import { X, ShoppingBag, Trash2, ArrowRight, Sparkles, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { formatCurrency } from '../utils';
 
 export default function CartDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const { 
@@ -118,7 +119,7 @@ export default function CartDrawer({ isOpen, onClose }: { isOpen: boolean; onClo
                             <span className="text-[9px] uppercase font-bold tracking-widest text-accent">{item.product.category}</span>
                             <h4 className="font-heading text-xs font-bold text-gray-800 line-clamp-1">{item.product.name}</h4>
                             <span className="text-xs font-bold text-accent font-heading mt-0.5 block">
-                              ${activePrice}
+                              {formatCurrency(activePrice)}
                             </span>
                           </div>
                           
@@ -209,28 +210,28 @@ export default function CartDrawer({ isOpen, onClose }: { isOpen: boolean; onClo
                   <div className="flex flex-col gap-2 border-b border-brand-border/20 pb-3 text-xs text-gray-600">
                     <div className="flex justify-between">
                       <span>Bag Subtotal</span>
-                      <span className="font-semibold text-gray-800">${subtotal.toFixed(2)}</span>
+                      <span className="font-semibold text-gray-800">{formatCurrency(subtotal)}</span>
                     </div>
                     {appliedDiscount > 0 && (
                       <div className="flex justify-between text-accent font-semibold">
                         <span>Coupon Discount ({appliedDiscount}%)</span>
-                        <span>-${discountAmount.toFixed(2)}</span>
+                        <span>-{formatCurrency(discountAmount)}</span>
                       </div>
                     )}
                     <div className="flex justify-between">
                       <span>Est. Shipping Charges</span>
-                      <span>${shippingCharge.toFixed(2)}</span>
+                      <span>{formatCurrency(shippingCharge)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Estimated Tax ({settings.taxPercent}%)</span>
-                      <span>${taxAmount.toFixed(2)}</span>
+                      <span>{formatCurrency(taxAmount)}</span>
                     </div>
                   </div>
 
                   {/* Total */}
                   <div className="flex justify-between items-baseline">
                     <span className="font-heading text-base font-bold text-gray-800">Order Total</span>
-                    <span className="font-heading text-xl font-black text-accent">${totalAmount.toFixed(2)}</span>
+                    <span className="font-heading text-xl font-black text-accent">{formatCurrency(totalAmount)}</span>
                   </div>
 
                   {/* Checkout Button */}

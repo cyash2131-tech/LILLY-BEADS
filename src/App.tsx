@@ -12,6 +12,99 @@ import CheckoutView from './components/CheckoutView';
 import AccountView from './components/AccountView';
 import AdminView from './components/AdminView';
 import CartDrawer from './components/CartDrawer';
+import { motion, AnimatePresence } from 'motion/react';
+
+function BackgroundDecor() {
+  return (
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none opacity-45">
+      {/* Soft animated slow-moving pastel gradient orbs */}
+      <motion.div
+        animate={{
+          x: [0, 40, -20, 0],
+          y: [0, -60, 40, 0],
+          scale: [1, 1.15, 0.9, 1],
+        }}
+        transition={{
+          duration: 25,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+        className="absolute top-[10%] left-[5%] w-72 h-72 rounded-full bg-secondary/35 blur-3xl"
+      />
+      
+      <motion.div
+        animate={{
+          x: [0, -50, 30, 0],
+          y: [0, 70, -30, 0],
+          scale: [1, 0.85, 1.1, 1],
+        }}
+        transition={{
+          duration: 28,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+        className="absolute top-[45%] right-[5%] w-96 h-96 rounded-full bg-primary/35 blur-3xl"
+      />
+
+      <motion.div
+        animate={{
+          x: [0, 30, -30, 0],
+          y: [0, 50, 50, 0],
+          scale: [1, 1.1, 0.95, 1],
+        }}
+        transition={{
+          duration: 22,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+        className="absolute bottom-[10%] left-[15%] w-80 h-80 rounded-full bg-accent/25 blur-3xl"
+      />
+
+      {/* Floating flower icons & sparkles */}
+      <div className="absolute inset-0">
+        {[...Array(12)].map((_, i) => {
+          const size = [16, 24, 30, 20, 26][i % 5];
+          const delay = i * 1.5;
+          const left = [8, 25, 42, 60, 73, 85, 92, 52, 18, 88, 33, 68][i];
+          const top = [15, 65, 30, 80, 22, 50, 75, 92, 45, 10, 85, 5][i];
+          const duration = 14 + (i * 2);
+          
+          return (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{
+                opacity: [0.1, 0.7, 0.1],
+                y: [-30, 30, -30],
+                rotate: [0, 360],
+              }}
+              transition={{
+                duration: duration,
+                repeat: Infinity,
+                delay: delay,
+                ease: "easeInOut"
+              }}
+              style={{
+                position: 'absolute',
+                left: `${left}%`,
+                top: `${top}%`,
+              }}
+              className="text-primary/45 flex items-center justify-center pointer-events-none select-none"
+            >
+              {i % 3 === 0 ? (
+                <span style={{ fontSize: `${size}px` }}>🌸</span>
+              ) : i % 3 === 1 ? (
+                <span style={{ fontSize: `${size}px` }}>✨</span>
+              ) : (
+                <span style={{ fontSize: `${size}px` }}>💕</span>
+              )}
+            </motion.div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 function AppContent() {
   const { currentView, setCurrentView } = useApp();
@@ -53,11 +146,7 @@ function AppContent() {
       </div>
 
       {/* Floating Sparkles decorative background objects (safe absolute layers) */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden opacity-30">
-        <div className="absolute top-[15%] left-[5%] w-10 h-10 rounded-full bg-secondary/30 blur-2xl animate-pulse" />
-        <div className="absolute top-[40%] right-[8%] w-16 h-16 rounded-full bg-secondary/40 blur-3xl animate-pulse" />
-        <div className="absolute bottom-[20%] left-[12%] w-24 h-24 rounded-full bg-secondary/20 blur-3xl" />
-      </div>
+      <BackgroundDecor />
 
       {/* Navigation */}
       <Navbar onOpenCart={() => setCartOpen(true)} />

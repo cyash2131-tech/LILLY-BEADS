@@ -4,6 +4,7 @@ import { StorageManager } from '../db';
 import { Product, Review } from '../types';
 import { Heart, ShoppingBag, Share2, Star, Check, ArrowLeft, RefreshCw } from 'lucide-react';
 import ProductCard from './ProductCard';
+import { formatCurrency } from '../utils';
 
 export default function ProductView() {
   const { 
@@ -194,15 +195,15 @@ export default function ProductView() {
               {hasSale ? (
                 <div className="flex items-baseline gap-2.5">
                   <span className="text-3xl font-extrabold text-accent font-heading">
-                    ${product.salePrice}
+                    {formatCurrency(product.salePrice!)}
                   </span>
                   <span className="text-sm text-gray-400 line-through">
-                    ${product.price}
+                    {formatCurrency(product.price)}
                   </span>
                 </div>
               ) : (
                 <span className="text-3xl font-extrabold text-gray-800 font-heading">
-                  ${product.price}
+                  {formatCurrency(product.price)}
                 </span>
               )}
               <span className="text-xs text-gray-500 mt-1 block">
