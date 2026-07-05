@@ -1,0 +1,64 @@
+rules_version = '2';
+service cloudfire store {
+  match /databases/{database}/documents {
+    
+    // 1. Global Safety Net: Default Deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+    
+    // Reusable Security Primitives
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function isAdmin() {
+      return isSignedIn() && 
+             request.auth.token.email == "cyash2131@gmail.com" && 
+             request.auth.token.email_verified == true;
+    }
+    
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // --- PRODUCTS ---
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if isAdmin() && isValidId(productId);
+    }
+    
+    // --- CATEGORIES ---
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow write: if isAdmin() && isValidId(categoryId);
+    }
+    
+    // --- REVIEWS ---
+    match /reviews/{reviewId} {
+      allow read: if true;
+      allow create: if true; // Customers can submit reviews anonymously or logged in
+      allow update, delete: if isAdmin();
+    }
+    
+    // --- SETTINGS ---
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    // --- ORDERS ---
+    match /orders/{orderId} {
+      allow create: if true; // Checkout can be guest checkout
+      allow get: if true; // Allow checking confirmation screen
+      allow list, update, delete: if isAdmin();
+    }
+    
+    // --- CUSTOM REQUESTS ---
+    match /custom_requests/{requestId} {
+      allow create: if true; // Guest submissions are supported
+      allow get: if true; // Allow client confirmation
+      allow list, update, delete: if isAdmin();
+    }
+  }
+}

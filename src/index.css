@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+@theme {
+  --font-sans: "Poppins", sans-serif;
+  --font-heading: "Fredoka", sans-serif;
+  
+  --color-primary: #F8BBD0;
+  --color-secondary: #FFDCE8;
+  --color-bg-brand: #FFF9FB;
+  --color-accent: #E88BA5;
+  --color-text-brand: #4A4A4A;
+  --color-border-brand: #F3D6E2;
+}
+
+body {
+  background-color: #FFF9FB;
+  color: #4A4A4A;
+  font-family: "Poppins", sans-serif;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6, .font-heading {
+  font-family: "Fredoka", sans-serif;
+}
+
+/* Glassmorphism utility */
+.glass {
+  background: rgba(255, 249, 251, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(243, 214, 226, 0.5);
+}
+
+/* Scrollbar styles */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #FFF9FB;
+}
+::-webkit-scrollbar-thumb {
+  background: #F8BBD0;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #E88BA5;
+}

@@ -1,0 +1,134 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "A handmade beaded jewelry product",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "price": { "type": "number" },
+        "salePrice": { "type": "number" },
+        "images": { "type": "array" },
+        "category": { "type": "string" },
+        "stock": { "type": "number" },
+        "featured": { "type": "boolean" },
+        "available": { "type": "boolean" },
+        "rating": { "type": "number" },
+        "reviewsCount": { "type": "number" }
+      },
+      "required": ["id", "name", "description", "price", "images", "category", "stock", "featured", "available"]
+    },
+    "Category": {
+      "title": "Category",
+      "description": "Product category",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "image": { "type": "string" },
+        "description": { "type": "string" }
+      },
+      "required": ["id", "name", "image"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "An order submitted by a customer",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "customerName": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "shippingAddress": { "type": "string" },
+        "items": { "type": "array" },
+        "couponCode": { "type": "string" },
+        "subtotal": { "type": "number" },
+        "shippingCharges": { "type": "number" },
+        "tax": { "type": "number" },
+        "totalAmount": { "type": "number" },
+        "paymentStatus": { "type": "string" },
+        "orderStatus": { "type": "string" },
+        "orderDate": { "type": "string" }
+      },
+      "required": ["id", "customerName", "phone", "email", "shippingAddress", "items", "subtotal", "shippingCharges", "tax", "totalAmount", "paymentStatus", "orderStatus", "orderDate"]
+    },
+    "CustomRequest": {
+      "title": "CustomRequest",
+      "description": "A custom handmade beaded jewelry request",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "description": { "type": "string" },
+        "referenceImage": { "type": "string" },
+        "preferredColors": { "type": "array" },
+        "preferredBeads": { "type": "array" },
+        "budget": { "type": "number" },
+        "deliveryDate": { "type": "string" },
+        "status": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "name", "phone", "email", "description", "preferredColors", "preferredBeads", "budget", "deliveryDate", "status", "createdAt"]
+    },
+    "Review": {
+      "title": "Review",
+      "description": "Customer review of a product",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "productId": { "type": "string" },
+        "customerName": { "type": "string" },
+        "rating": { "type": "number" },
+        "comment": { "type": "string" },
+        "date": { "type": "string" }
+      },
+      "required": ["id", "customerName", "rating", "comment", "date"]
+    },
+    "AppSettings": {
+      "title": "AppSettings",
+      "description": "Global store and general configuration",
+      "type": "object",
+      "properties": {
+        "storeName": { "type": "string" },
+        "logo": { "type": "string" },
+        "socialInstagram": { "type": "string" },
+        "socialWhatsApp": { "type": "string" },
+        "whatsAppNumber": { "type": "string" },
+        "shippingCharges": { "type": "number" },
+        "taxPercent": { "type": "number" },
+        "bannerImages": { "type": "array" }
+      },
+      "required": ["storeName", "logo", "socialInstagram", "socialWhatsApp", "whatsAppNumber", "shippingCharges", "taxPercent"]
+    }
+  },
+  "firestore": {
+    "products/{productId}": {
+      "schema": { "$ref": "#/entities/Product" },
+      "description": "Beaded jewelry products"
+    },
+    "categories/{categoryId}": {
+      "schema": { "$ref": "#/entities/Category" },
+      "description": "Product categories"
+    },
+    "orders/{orderId}": {
+      "schema": { "$ref": "#/entities/Order" },
+      "description": "Customer orders"
+    },
+    "custom_requests/{requestId}": {
+      "schema": { "$ref": "#/entities/CustomRequest" },
+      "description": "Custom handmade requests"
+    },
+    "reviews/{reviewId}": {
+      "schema": { "$ref": "#/entities/Review" },
+      "description": "Customer reviews of products"
+    },
+    "settings/general": {
+      "schema": { "$ref": "#/entities/AppSettings" },
+      "description": "General settings of Lilyy Beads"
+    }
+  }
+}
