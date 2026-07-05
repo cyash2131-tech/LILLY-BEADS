@@ -53,7 +53,7 @@ export default function AdminView() {
     
     // Simulate slight delay for premium feedback feel
     setTimeout(() => {
-      if (username === 'y4sh_fr' && password === 'yash2010') {
+      if (username === 'yash' && password === 'yash2010') {
         setIsAdminLoggedIn(true);
         sessionStorage.setItem('isAdminLoggedIn', 'true');
       } else {
